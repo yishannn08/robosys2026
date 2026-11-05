@@ -1,12 +1,18 @@
-# robosys2026
-ロボットシステム学の授業で利用する
+# plusコマンド
+![test](https://github.com/yishannn08/robosys2026/actions/workflows/test.yml/badge.svg)
+↑ テスト結果を反映したバッジの画像が埋め込まれる
+
+標準入力から読み込んだ数字を足す。
 
 
-## 著作権とLICENSE 
+## 必要なソフトウェア
+- Python
+  - テスト済みバージョン: 3.10〜3.14
 
-このソフトウェアパッケージは、3条項BSDライセンスの下、再頒布および使用が許可されます。
-このパッケージは、aaa由来のコード（© 2025 Hoge Fuge）を利用しています。
-このパッケージのコードは、下記のスライド（CC BY-SA 4.0 by Taro Suzuki）のものを、
-  本人の許可を得て自身の著作としたものです。
-     https://github.com/tarolab-cit/lectures/tree/main/robosys2026
-© 2026 Taro Suzuki
+## テスト環境
+- Ubuntu 24.04 LTS
+
+## ライセンス
+- このソフトウェアパッケージは、3条項BSDライセンスの下、再頒布および使用が許可されます。
+- © 2026 Taro Suzuki
+
