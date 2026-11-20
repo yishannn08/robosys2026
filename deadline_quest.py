@@ -2,6 +2,9 @@
 
 from datetime import date
 import sys
+import json
+
+DEFAULT_DAILY_CAPACITY = 5.0
 
 
 def main():
