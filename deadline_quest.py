@@ -10,7 +10,7 @@ def main():
     for line_number, line in enumerate(sys.stdin, start=1):
         line = line.strip()
 
-        if not line == "":
+        if line == "":
             continue
         parts = line.split(maxsplit=2)
 
