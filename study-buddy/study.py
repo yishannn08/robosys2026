@@ -615,3 +615,81 @@ class StudyBuddy:
                 pady=5,
                 command=lambda i=index: self.delete_task(i)
             ).pack(side="right")
+
+
+    def create_statistics_page(self):
+        tk.Label(
+            self.page_frame,
+            text="Keep track of your learning progress.",
+            font=("Arial", 11),
+            bg=BG,
+            fg=MUTED
+        ).pack(anchor="w", pady=(0, 25))
+
+        stats_frame = tk.Frame(
+            self.page_frame,
+            bg=BG
+        )
+        stats_frame.pack(fill="x")
+
+        completed = sum(
+            1 for task in self.tasks if task["done"]
+        )
+
+        total = len(self.tasks)
+
+        self.create_stat_card(
+            stats_frame,
+            "Study Time",
+            f"{self.total_study_minutes} min"
+        )
+
+        self.create_stat_card(
+            stats_frame,
+            "Completed Tasks",
+            str(completed)
+        )
+
+        self.create_stat_card(
+            stats_frame,
+            "Total Tasks",
+            str(total)
+        )
+
+        tk.Label(
+            self.page_frame,
+            text="Small progress is still progress.",
+            font=("Arial", 14, "italic"),
+            bg=BG,
+            fg=BLUE
+        ).pack(pady=40)
+
+    def create_stat_card(self, parent, title, value):
+        card = tk.Frame(
+            parent,
+            bg=PANEL,
+            padx=25,
+            pady=30
+        )
+        card.pack(
+            side="left",
+            fill="both",
+            expand=True,
+            padx=8
+        )
+
+        tk.Label(
+            card,
+            text=title,
+            font=("Arial", 11),
+            bg=PANEL,
+            fg=MUTED
+        ).pack(pady=(0, 12))
+
+        tk.Label(
+            card,
+            text=value,
+            font=("Arial", 25, "bold"),
+            bg=PANEL,
+            fg=DARK_BLUE
+        ).pack()
