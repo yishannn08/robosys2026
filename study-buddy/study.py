@@ -446,3 +446,172 @@ class StudyBuddy:
         self.pause_timer()
         self.remaining_seconds = self.focus_minutes * 60
         self.update_timer_text()
+
+
+    def widget_is_alive(self, widget):
+        if widget is None:
+            return False
+
+        try:
+            return bool(widget.winfo_exists())
+        except tk.TclError:
+            return False
+
+    def add_task(self):
+        task = simpledialog.askstring(
+            "New Task",
+            "Enter your task:"
+        )
+
+        if task and task.strip():
+            self.tasks.append({
+                "title": task.strip(),
+                "done": False
+            })
+
+            self.refresh_today_tasks()
+            self.refresh_tasks()
+
+    def toggle_task(self, index, variable):
+        if 0 <= index < len(self.tasks):
+            self.tasks[index]["done"] = bool(variable.get())
+
+            self.refresh_today_tasks()
+            self.refresh_tasks()
+
+    def delete_task(self, index):
+        if 0 <= index < len(self.tasks):
+            del self.tasks[index]
+
+            self.refresh_today_tasks()
+            self.refresh_tasks()
+
+    def refresh_today_tasks(self):
+        if not self.widget_is_alive(self.today_task_frame):
+            return
+
+        for widget in self.today_task_frame.winfo_children():
+            widget.destroy()
+
+        if not self.tasks:
+            tk.Label(
+                self.today_task_frame,
+                text="No tasks yet. Add a new task!",
+                font=("Arial", 11),
+                bg=BG,
+                fg=MUTED
+            ).pack(anchor="w", pady=10)
+            return
+
+        for index, task in enumerate(self.tasks):
+            row = tk.Frame(
+                self.today_task_frame,
+                bg=PANEL,
+                padx=12,
+                pady=8
+            )
+            row.pack(fill="x", pady=4)
+
+            variable = tk.BooleanVar(value=task["done"])
+
+            tk.Checkbutton(
+                row,
+                text=task["title"],
+                variable=variable,
+                command=lambda i=index, v=variable: self.toggle_task(i, v),
+                font=("Arial", 11),
+                bg=PANEL,
+                fg=DARK,
+                activebackground=PANEL,
+                selectcolor=PANEL_BLUE
+            ).pack(side="left", fill="x", expand=True)
+
+            if task["done"]:
+                tk.Label(
+                    row,
+                    text="Done",
+                    font=("Arial", 9),
+                    bg=PANEL,
+                    fg=GREEN
+                ).pack(side="right")
+
+    def create_tasks_page(self):
+        tk.Label(
+            self.page_frame,
+            text="Manage your study tasks here.",
+            font=("Arial", 11),
+            bg=BG,
+            fg=MUTED
+        ).pack(anchor="w", pady=(0, 15))
+
+        tk.Button(
+            self.page_frame,
+            text="+ Add Task",
+            font=("Arial", 11, "bold"),
+            bg=BLUE,
+            fg=WHITE,
+            relief="flat",
+            padx=18,
+            pady=8,
+            command=self.add_task
+        ).pack(anchor="e", pady=(0, 15))
+
+        self.task_list_frame = tk.Frame(
+            self.page_frame,
+            bg=BG
+        )
+        self.task_list_frame.pack(fill="both", expand=True)
+
+        self.refresh_tasks()
+
+    def refresh_tasks(self):
+        if not self.widget_is_alive(self.task_list_frame):
+            return
+
+        for widget in self.task_list_frame.winfo_children():
+            widget.destroy()
+
+        if not self.tasks:
+            tk.Label(
+                self.task_list_frame,
+                text="Your task list is empty.",
+                font=("Arial", 12),
+                bg=BG,
+                fg=MUTED
+            ).pack(pady=20)
+            return
+
+        for index, task in enumerate(self.tasks):
+            row = tk.Frame(
+                self.task_list_frame,
+                bg=PANEL,
+                padx=15,
+                pady=12
+            )
+            row.pack(fill="x", pady=5)
+
+            variable = tk.BooleanVar(value=task["done"])
+
+            tk.Checkbutton(
+                row,
+                text=task["title"],
+                variable=variable,
+                command=lambda i=index, v=variable: self.toggle_task(i, v),
+                font=("Arial", 11),
+                bg=PANEL,
+                fg=DARK,
+                activebackground=PANEL,
+                selectcolor=PANEL_BLUE
+            ).pack(side="left", fill="x", expand=True)
+
+            tk.Button(
+                row,
+                text="Delete",
+                font=("Arial", 9),
+                bg=PANEL_BLUE,
+                fg=DARK_BLUE,
+                relief="flat",
+                padx=12,
+                pady=5,
+                command=lambda i=index: self.delete_task(i)
+            ).pack(side="right")
