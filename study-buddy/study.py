@@ -21,8 +21,8 @@ class StudyBuddy:
     def __init__(self, root):
         self.root = root
         self.root.title("Study Buddy")
-        self.root.geometry("900x680")
-        self.root.minsize(850, 550)
+        self.root.geometry("1050x720")
+        self.root.minsize(900, 550)
         self.root.configure(bg=BG)
 
         self.focus_minutes = 25
@@ -39,90 +39,92 @@ class StudyBuddy:
         self.today_task_frame = None
         self.task_list_frame = None
         self.timer_label = None
+        self.currect_page= None
 
         self.create_main_layout()
         self.show_page("Focus")
 
 
     def create_main_layout(self):
-        self.main_frame = tk.Frame(self.root, bg=BG)
-        self.main_frame.pack(fill="both", expand=True)
-
-        self.sidebar = tk.Frame(
-            self.main_frame,
+header = tk.Frame(
+            self.root,
             bg=DARK_BLUE,
-            width=190
+            height=65
+        )
+        header.pack(fill="x")
+        header.pack_propagate(False)
+
+        tk.Label(
+            header,
+            text="  Study Buddy",
+            font=("Arial", 23, "bold"),
+            bg=DARK_BLUE,
+            fg=WHITE
+        ).pack(side="left", padx=18, pady=12)
+
+        tk.Label(
+            header,
+            text="STUDY • FOCUS • GROW",
+            font=("Arial", 10, "bold"),
+            bg=DARK_BLUE,
+            fg="#C5D5EA"
+        ).pack(side="right", padx=25)
+
+        body = tk.Frame(self.root, bg=BG)
+        body.pack(fill="both", expand=True)
+
+        # Sidebar
+        self.sidebar = tk.Frame(
+            body,
+            bg="#D5E1F0",
+            width=205
         )
         self.sidebar.pack(side="left", fill="y")
         self.sidebar.pack_propagate(False)
 
-        logo = tk.Label(
+        tk.Label(
             self.sidebar,
-            text="Study Buddy",
-            font=("Arial", 21, "bold"),
-            bg=DARK_BLUE,
-            fg=WHITE
-        )
-        logo.pack(pady=(35, 45))
-
-        self.nav_buttons = {}
+            text="MENU",
+            font=("Arial", 11, "bold"),
+            bg="#D5E1F0",
+            fg=MUTED
+        ).pack(anchor="w", padx=22, pady=(28, 15))
 
         pages = ["Focus", "Tasks", "Statistics", "Settings"]
 
         for page in pages:
-            button = tk.Button(
+            tk.Button(
                 self.sidebar,
                 text=page,
-                font=("Arial", 12),
-                bg=DARK_BLUE,
-                fg=WHITE,
-                activebackground=BLUE,
-                activeforeground=WHITE,
+                font=("Arial", 14, "bold"),
+                bg="#E8EFF8",
+                fg=DARK_BLUE,
+                activebackground="#B7CBE3",
+                activeforeground=DARK_BLUE,
                 relief="flat",
                 bd=0,
                 cursor="hand2",
                 anchor="w",
-                padx=30,
+                padx=18,
                 pady=13,
                 command=lambda p=page: self.show_page(p)
-            )
-            button.pack(fill="x", padx=12, pady=5)
-            self.nav_buttons[page] = button
+            ).pack(fill="x", padx=13, pady=7)
 
-        self.content_frame = tk.Frame(
-            self.main_frame,
-            bg=BG
-        )
-        self.content_frame.pack(
+        tk.Label(
+            self.sidebar,
+            text="Keep learning!",
+            font=("Arial", 9),
+            bg="#D5E1F0",
+            fg=MUTED
+        ).pack(side="bottom", pady=25)
+
+        self.main_area = tk.Frame(body, bg=BG)
+        self.main_area.pack(
             side="left",
             fill="both",
-            expand=True
-        )
-
-        self.header = tk.Frame(
-            self.content_frame,
-            bg=BG
-        )
-        self.header.pack(fill="x", padx=35, pady=(25, 10))
-
-        self.page_title = tk.Label(
-            self.header,
-            text="Focus",
-            font=("Arial", 24, "bold"),
-            bg=BG,
-            fg=DARK_BLUE
-        )
-        self.page_title.pack(side="left")
-
-        self.page_frame = tk.Frame(
-            self.content_frame,
-            bg=BG
-        )
-        self.page_frame.pack(
-            fill="both",
             expand=True,
-            padx=35,
-            pady=15
+            padx=18,
+            pady=18
         )
 
     def show_page(self, page):
