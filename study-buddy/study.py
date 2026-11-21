@@ -18,11 +18,11 @@ GREEN = "#A8CBBF"
 
 class StudyBuddy:
 
-    def __init__(self, root):
+    def __init__(self,root):
         self.root = root
         self.root.title("Study Buddy")
-        self.root.geometry("1050x720")
-        self.root.minsize(900, 550)
+        self.root.geometry("1100x720")
+        self.root.minsize(900, 600)
         self.root.configure(bg=BG)
 
         self.focus_minutes = 25
@@ -39,92 +39,90 @@ class StudyBuddy:
         self.today_task_frame = None
         self.task_list_frame = None
         self.timer_label = None
-        self.currect_page= None
 
         self.create_main_layout()
         self.show_page("Focus")
 
 
     def create_main_layout(self):
-        header = tk.Frame(
-            self.root,
-            bg=DARK_BLUE,
-            height=65
-        )
-        header.pack(fill="x")
-        header.pack_propagate(False)
+        self.main_frame = tk.Frame(self.root, bg=BG)
+        self.main_frame.pack(fill="both", expand=True)
 
-        tk.Label(
-            header,
-            text="  Study Buddy",
-            font=("Arial", 23, "bold"),
-            bg=DARK_BLUE,
-            fg=WHITE
-        ).pack(side="left", padx=18, pady=12)
-
-        tk.Label(
-            header,
-            text="STUDY • FOCUS • GROW",
-            font=("Arial", 10, "bold"),
-            bg=DARK_BLUE,
-            fg="#C5D5EA"
-        ).pack(side="right", padx=25)
-
-        body = tk.Frame(self.root, bg=BG)
-        body.pack(fill="both", expand=True)
-
-        # Sidebar
         self.sidebar = tk.Frame(
-            body,
-            bg="#D5E1F0",
-            width=205
+            self.main_frame,
+            bg=DARK_BLUE,
+            width=210
         )
         self.sidebar.pack(side="left", fill="y")
         self.sidebar.pack_propagate(False)
 
-        tk.Label(
+        logo = tk.Label(
             self.sidebar,
-            text="MENU",
-            font=("Arial", 11, "bold"),
-            bg="#D5E1F0",
-            fg=MUTED
-        ).pack(anchor="w", padx=22, pady=(28, 15))
+            text="Study Buddy",
+            font=("Arial", 21, "bold"),
+            bg=DARK_BLUE,
+            fg=WHITE
+        )
+        logo.pack(pady=(35, 45))
+
+        self.nav_buttons = {}
 
         pages = ["Focus", "Tasks", "Statistics", "Settings"]
 
         for page in pages:
-            tk.Button(
+            button = tk.Button(
                 self.sidebar,
                 text=page,
-                font=("Arial", 14, "bold"),
-                bg="#E8EFF8",
-                fg=DARK_BLUE,
-                activebackground="#B7CBE3",
-                activeforeground=DARK_BLUE,
+                font=("Arial", 12),
+                bg=DARK_BLUE,
+                fg=WHITE,
+                activebackground=BLUE,
+                activeforeground=WHITE,
                 relief="flat",
                 bd=0,
                 cursor="hand2",
                 anchor="w",
-                padx=18,
+                padx=30,
                 pady=13,
                 command=lambda p=page: self.show_page(p)
-            ).pack(fill="x", padx=13, pady=7)
+            )
+            button.pack(fill="x", padx=12, pady=5)
+            self.nav_buttons[page] = button
 
-        tk.Label(
-            self.sidebar,
-            text="Keep learning!",
-            font=("Arial", 9),
-            bg="#D5E1F0",
-            fg=MUTED
-        ).pack(side="bottom", pady=25)
-
-        self.main_area = tk.Frame(body, bg=BG)
-        self.main_area.pack(
+        self.content_frame = tk.Frame(
+            self.main_frame,
+            bg=BG
+        )
+        self.content_frame.pack(
             side="left",
             fill="both",
+            expand=True
+        )
+
+        self.header = tk.Frame(
+            self.content_frame,
+            bg=BG
+        )
+        self.header.pack(fill="x", padx=35, pady=(25, 10))
+
+        self.page_title = tk.Label(
+            self.header,
+            text="Focus",
+            font=("Arial", 24, "bold"),
+            bg=BG,
+            fg=DARK_BLUE
+        )
+        self.page_title.pack(side="left")
+
+        self.page_frame = tk.Frame(
+            self.content_frame,
+            bg=BG
+        )
+        self.page_frame.pack(
+            fill="both",
             expand=True,
-            padx=18,
-            pady=18
+            padx=35,
+            pady=15
         )
 
     def show_page(self, page):
@@ -154,174 +152,303 @@ class StudyBuddy:
         elif page == "Settings":
             self.create_settings_page()
 
-
     def draw_study_scene(self, parent):
         canvas = tk.Canvas(
             parent,
-            height=250,
-            bg=PANEL_BLUE,
+            width=345,
+            height=395,
+            bg="#6F8FB9",
             highlightthickness=0
         )
-        canvas.pack(fill="x", pady=(0, 20))
+        canvas.pack(fill="both", expand=True)
 
-        canvas.create_oval(
-            650, -100, 900, 150,
-            fill="#C3D2E8",
+        canvas.create_rectangle(
+            0, 0, 345, 395,
+            fill="#6F8FB9",
             outline=""
         )
 
         canvas.create_rectangle(
-            55, 30, 210, 135,
-            fill="#F7F9FD",
-            outline=BLUE,
+            20, 25, 185, 205,
+            fill="#D8E4F3",
+            outline=DARK_BLUE,
             width=3
         )
 
-        canvas.create_line(
-            132, 30, 132, 135,
-            fill=BLUE,
-            width=2
-        )
-
-        canvas.create_line(
-            55, 82, 210, 82,
-            fill=BLUE,
-            width=2
-        )
-
         canvas.create_oval(
-            75, 45, 105, 75,
-            fill="#E6D9A8",
-            outline=""
-        )
-
-        canvas.create_rectangle(
-            0, 185, 850, 250,
-            fill="#AABBD2",
-            outline=""
-        )
-
-        canvas.create_rectangle(
-            170, 125, 390, 185,
-            fill=DARK_BLUE,
-            outline=""
-        )
-
-        canvas.create_rectangle(
-            180, 135, 380, 175,
-            fill="#DCE7F4",
+            45, 55, 92, 102,
+            fill="#F5E5B5",
             outline=""
         )
 
         canvas.create_oval(
-            270, 185, 290, 195,
-            fill=DARK_BLUE,
-            outline=""
-        )
-
-        canvas.create_rectangle(
-            245, 195, 315, 200,
-            fill=DARK_BLUE,
-            outline=""
-        )
-
-        canvas.create_rectangle(
-            440, 155, 545, 165,
-            fill="#F7F9FD",
-            outline=BLUE
-        )
-
-        canvas.create_rectangle(
-            450, 145, 540, 155,
+            62, 45, 108, 91,
             fill="#D8E4F3",
-            outline=BLUE
-        )
-
-        canvas.create_line(
-            600, 185, 600, 105,
-            fill=DARK_BLUE,
-            width=5
-        )
-
-        canvas.create_line(
-            600, 110, 650, 85,
-            fill=DARK_BLUE,
-            width=5
-        )
-
-        canvas.create_arc(
-            620, 60, 685, 120,
-            start=180,
-            extent=180,
-            fill="#E6D9A8",
-            outline=DARK_BLUE,
-            width=2
+            outline=""
         )
 
         canvas.create_rectangle(
-            690, 165, 710, 185,
-            fill="#B8A6A0",
+            99, 25, 105, 205,
+            fill="#344F75",
             outline=""
         )
 
-        canvas.create_oval(
-            675, 115, 725, 170,
-            fill=GREEN,
-            outline=""
-        )
-
-        canvas.create_oval(
-            655, 130, 690, 165,
-            fill=GREEN,
-            outline=""
-        )
-
-        canvas.create_oval(
-            705, 125, 740, 165,
-            fill=GREEN,
+        canvas.create_rectangle(
+            20, 112, 185, 118,
+            fill="#243B5A",
             outline=""
         )
 
         canvas.create_text(
-            110, 155,
-            text="Time to study",
-            font=("Arial", 12, "bold"),
-            fill=DARK_BLUE
+            145, 55,
+            text="✦",
+            fill=WHITE,
+            font=("Arial", 15)
+        )
+
+        canvas.create_text(
+            240, 45,
+            text="✦",
+            fill=WHITE,
+            font=("Arial", 17)
+        )
+
+        canvas.create_text(
+            205, 100,
+            text="✦",
+            fill=WHITE,
+            font=("Arial", 11)
+        )
+
+        canvas.create_rectangle(
+            0, 300, 345, 395,
+            fill="#344F75",
+            outline=""
+        )
+
+        canvas.create_rectangle(
+            0, 300, 345, 315,
+            fill="#243B5A",
+            outline=""
+        )
+
+        canvas.create_line(
+            80, 300, 80, 205,
+            fill="#243B5A",
+            width=6
+        )
+
+        canvas.create_line(
+            80, 210, 112, 185,
+            fill="#243B5A",
+            width=6
+        )
+
+        canvas.create_polygon(
+            82, 180,
+            145, 180,
+            125, 210,
+            100, 210,
+            fill="#F7F9FD",
+            outline="#243B5A",
+            width=2
+        )
+
+        canvas.create_rectangle(
+            155, 230, 265, 300,
+            fill="#243B5A",
+            outline=""
+        )
+
+        canvas.create_rectangle(
+            163, 237, 257, 290,
+            fill="#D8E4F3",
+            outline=""
+        )
+
+        canvas.create_rectangle(
+            198, 290, 220, 300,
+            fill="#7399C9",
+            outline=""
+        )
+
+        canvas.create_rectangle(
+            198, 290, 220, 300,
+            fill="#243B5A",
+            outline=""
+        )
+
+        canvas.create_oval(
+            207, 207, 236, 237,
+            fill="#AEBBD8",
+            outline=""
+        )
+
+        canvas.create_polygon(
+            210, 218,
+            210, 205,
+            221, 213,
+            fill="#AEBBD8",
+            outline="#8292A8"
+        )
+
+        canvas.create_polygon(
+            224, 213,
+            235, 205,
+            234, 220,
+            fill="#AEBBD8",
+            outline="#8292A8"
+        )
+
+        canvas.create_oval(
+            214, 218, 217, 221,
+            fill="#34445D",
+            outline=""
+        )
+
+        canvas.create_oval(
+            226, 218, 229, 221,
+            fill="#34445D",
+            outline=""
+        )
+
+        canvas.create_polygon(
+            219, 223,
+            223, 223,
+            221, 226,
+            fill="#D9BFD0",
+            outline=""
+        )
+
+        canvas.create_polygon(
+            294, 273,
+            325, 273,
+            320, 300,
+            299, 300,
+            fill="#C8B3A7",
+            outline=""
+        )
+
+        canvas.create_line(
+            309, 275, 309, 195,
+            fill="#426D75",
+            width=3
+        )
+
+        canvas.create_line(
+            309, 238, 291, 218,
+            fill="#426D75",
+            width=2
+        )
+
+        canvas.create_polygon(
+            309, 240,
+            283, 224,
+            292, 218,
+            309, 232,
+            fill="#789F91",
+            outline=""
+        )
+
+        canvas.create_polygon(
+            309, 228,
+            326, 199,
+            329, 211,
+            313, 235,
+            fill="#789F91",
+            outline=""
+        )
+
+        canvas.create_polygon(
+            309, 211,
+            289, 180,
+            300, 184,
+            311, 205,
+            fill="#789F91",
+            outline=""
+        )
+
+        canvas.create_polygon(
+            309, 202,
+            315, 175,
+            321, 184,
+            312, 207,
+            fill="#789F91",
+            outline=""
         )
 
         return canvas
 
-
     def create_focus_page(self):
-        self.draw_study_scene(self.page_frame)
+        title = tk.Label(
+            self.page_frame,
+            text="Hey, welcome back!",
+            font=("Arial", 25, "bold"),
+            bg=BG,
+            fg=DARK_BLUE
+        )
+        title.pack(anchor="w", pady=(0, 15))
+
+        content = tk.Frame(self.page_frame, bg=BG)
+        content.pack(fill="both", expand=True)
+
+        left_frame = tk.Frame(
+            content,
+            bg=BG,
+            width=345
+        )
+        left_frame.pack(side="left", fill="y", padx=(0, 15))
+        left_frame.pack_propagate(False)
+
+        scene_frame = tk.Frame(
+            left_frame,
+            bg=PANEL_BLUE,
+            width=345,
+            height=395
+        )
+        scene_frame.pack(fill="x")
+        scene_frame.pack_propagate(False)
+
+        self.draw_study_scene(scene_frame)
+
+        tk.Label(
+            left_frame,
+            text="You can do it!",
+            font=("Arial", 14, "bold"),
+            bg=BG,
+            fg=DARK_BLUE
+        ).pack(pady=12)
+
+        right_frame = tk.Frame(content, bg=BG)
+        right_frame.pack(side="left", fill="both", expand=True)
 
         timer_frame = tk.Frame(
-            self.page_frame,
+            right_frame,
             bg=PANEL,
-            padx=25,
+            padx=15,
             pady=20
         )
-        timer_frame.pack(fill="x", pady=(0, 18))
+        timer_frame.pack(fill="x", pady=(0, 15))
 
         tk.Label(
             timer_frame,
-            text="Focus Time",
+            text="TIMER",
             font=("Arial", 15, "bold"),
             bg=PANEL,
             fg=DARK_BLUE
-        ).pack(pady=(0, 10))
+        ).pack(pady=(5, 10))
 
         self.timer_label = tk.Label(
             timer_frame,
             text=self.format_time(self.remaining_seconds),
-            font=("Arial", 42, "bold"),
+            font=("Arial", 48, "bold"),
             bg=PANEL,
-            fg=BLUE
+            fg=DARK_BLUE
         )
-        self.timer_label.pack(pady=5)
+        self.timer_label.pack(pady=8)
 
         button_frame = tk.Frame(timer_frame, bg=PANEL)
-        button_frame.pack(pady=(12, 0))
+        button_frame.pack(pady=10)
 
         tk.Button(
             button_frame,
@@ -329,13 +456,11 @@ class StudyBuddy:
             font=("Arial", 11, "bold"),
             bg=BLUE,
             fg=WHITE,
-            activebackground=DARK_BLUE,
-            activeforeground=WHITE,
             relief="flat",
-            padx=25,
-            pady=8,
+            padx=18,
+            pady=9,
             command=self.start_timer
-        ).pack(side="left", padx=6)
+        ).pack(side="left", padx=4)
 
         tk.Button(
             button_frame,
@@ -344,10 +469,10 @@ class StudyBuddy:
             bg=PANEL_BLUE,
             fg=DARK_BLUE,
             relief="flat",
-            padx=25,
-            pady=8,
+            padx=18,
+            pady=9,
             command=self.pause_timer
-        ).pack(side="left", padx=6)
+        ).pack(side="left", padx=4)
 
         tk.Button(
             button_frame,
@@ -356,45 +481,33 @@ class StudyBuddy:
             bg=PANEL_BLUE,
             fg=DARK_BLUE,
             relief="flat",
-            padx=25,
-            pady=8,
+            padx=18,
+            pady=9,
             command=self.reset_timer
-        ).pack(side="left", padx=6)
+        ).pack(side="left", padx=4)
 
-        tk.Label(
-            self.page_frame,
-            text="Don't forget to take a break.",
-            font=("Arial", 11, "italic"),
-            bg=BG,
-            fg=MUTED
-        ).pack(pady=(0, 15))
+        task_frame = tk.Frame(
+            right_frame,
+            bg=PANEL,
+            padx=18,
+            pady=15
+        )
+        task_frame.pack(fill="both", expand=True)
 
-        task_header = tk.Frame(self.page_frame, bg=BG)
-        task_header.pack(fill="x", pady=(5, 10))
+        task_header = tk.Frame(task_frame, bg=PANEL)
+        task_header.pack(fill="x", pady=(0, 12))
 
         tk.Label(
             task_header,
             text="Today's Tasks",
             font=("Arial", 16, "bold"),
-            bg=BG,
+            bg=PANEL,
             fg=DARK_BLUE
         ).pack(side="left")
 
-        tk.Button(
-            task_header,
-            text="+ Add",
-            font=("Arial", 10, "bold"),
-            bg=BLUE,
-            fg=WHITE,
-            relief="flat",
-            padx=15,
-            pady=5,
-            command=self.add_task
-        ).pack(side="right")
-
         self.today_task_frame = tk.Frame(
-            self.page_frame,
-            bg=BG
+            task_frame,
+            bg=PANEL
         )
         self.today_task_frame.pack(fill="both", expand=True)
 
