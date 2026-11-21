@@ -9,32 +9,25 @@ ng () {
 
 res=0
 
-out=$(printf "25 math\n40 python\n25 math\n" | ./studylog)
-[ "${out}" = "90" ] || ng "$LINENO"
+out=$(printf "Merry Christmas\n" | ./xtree)
+echo "${out}" | grep -q "★" || ng "$LINENO"
+echo "${out}" | grep -q "| Merry Christmas |" || ng "$LINENO"
 
-out=$(printf "15\n35\n" | ./studylog)
-[ "${out}" = "50" ] || ng "$LINENO"
+out_snow=$(printf "Robosys 2026\n" | ./xtree -s)
+echo "${out_snow}" | grep -q "| Robosys 2026 |" || ng "$LINENO"
 
-out=$(printf "25 math\n40 python\n25 math\n" | ./studylog -p)
-[ "${out}" = "3" ] || ng "$LINENO"
+out_color=$(printf "Hello\n" | ./xtree -c)
+printf "%s" "${out_color}" | grep -q $'\033\[' || ng "$LINENO"
 
-out=$(printf "25 math\n40 python\n25 math\n" | ./studylog -s)
-expected=$(printf "math 50\npython 40")
-[ "${out}" = "${expected}" ] || ng "$LINENO"
-
-out=$(printf "" | ./studylog 2>/dev/null)
+out=$(printf "" | ./xtree 2>/dev/null)
 [ "$?" = 1 ] || ng "$LINENO"
 [ "${out}" = "" ] || ng "$LINENO"
 
-out=$(printf "abc math\n" | ./studylog 2>/dev/null)
+out=$(printf "   \n" | ./xtree 2>/dev/null)
 [ "$?" = 1 ] || ng "$LINENO"
 [ "${out}" = "" ] || ng "$LINENO"
 
-out=$(printf -- "-10 math\n" | ./studylog 2>/dev/null)
-[ "$?" = 1 ] || ng "$LINENO"
-[ "${out}" = "" ] || ng "$LINENO"
-
-out=$(printf "25 math\n" | ./studylog -x 2>/dev/null)
+out=$(printf "Hello\n" | ./xtree -x 2>/dev/null)
 [ "$?" = 1 ] || ng "$LINENO"
 [ "${out}" = "" ] || ng "$LINENO"
 
