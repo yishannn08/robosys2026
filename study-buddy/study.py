@@ -1,3 +1,7 @@
+#!/usr/bin/env python3
+# SPDX-FileCopyrightText :2026 CHAI YI SHAN
+# SPDX-License-Identifier: BSD-3-Clause
+
 import tkinter as tk
 from tkinter import messagebox, simpledialog
 
