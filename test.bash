@@ -9,7 +9,7 @@ ng () {
 
 res=0
 
-out=$(printf "task,status,due\nReport,done,2026-11-01\nCode,todo,2099-12-31\nCode,todo,\n" | ./taskchk)
+out=$(printf "task,status,due\nReport,done,2026-11-01\nCode,todo,2099-12-31\nCode,todo,\n" | ./doneberry)
 echo "${out}" | grep -q "Total     : 3" || ng "$LINENO"
 echo "${out}" | grep -q "Completed : 1" || ng "$LINENO"
 echo "${out}" | grep -q "Remaining : 2" || ng "$LINENO"
@@ -17,23 +17,23 @@ echo "${out}" | grep -q "Duplicates: 1" || ng "$LINENO"
 echo "${out}" | grep -q "No due    : 1" || ng "$LINENO"
 echo "${out}" | grep -q "Overdue   : 0" || ng "$LINENO"
 
-out_overdue=$(printf "task,status,due\nOld task,todo,2020-01-01\n" | ./taskchk)
+out_overdue=$(printf "task,status,due\nOld task,todo,2020-01-01\n" | ./doneberry)
 echo "${out_overdue}" | grep -q "Overdue   : 1" || ng "$LINENO"
 echo "${out_overdue}" | grep -q -- "- Old task" || ng "$LINENO"
 
-out=$(printf "" | ./taskchk 2>/dev/null)
+out=$(printf "" | ./doneberry 2>/dev/null)
 [ "$?" = 1 ] || ng "$LINENO"
 [ "${out}" = "" ] || ng "$LINENO"
 
-out=$(printf "name,state\nA,done\n" | ./taskchk 2>/dev/null)
+out=$(printf "name,state\nA,done\n" | ./doneberry 2>/dev/null)
 [ "$?" = 1 ] || ng "$LINENO"
 [ "${out}" = "" ] || ng "$LINENO"
 
-out=$(printf "task,status,due\n,todo,2026-12-01\n" | ./taskchk 2>/dev/null)
+out=$(printf "task,status,due\n,todo,2026-12-01\n" | ./doneberry 2>/dev/null)
 [ "$?" = 1 ] || ng "$LINENO"
 [ "${out}" = "" ] || ng "$LINENO"
 
-out=$(printf "task,status,due\nA,todo,2026-99-99\n" | ./taskchk 2>/dev/null)
+out=$(printf "task,status,due\nA,todo,2026-99-99\n" | ./doneberry 2>/dev/null)
 [ "$?" = 1 ] || ng "$LINENO"
 [ "${out}" = "" ] || ng "$LINENO"
 
