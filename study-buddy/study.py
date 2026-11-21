@@ -556,16 +556,6 @@ class StudyBuddy:
         self.remaining_seconds = self.focus_minutes * 60
         self.update_timer_text()
 
-
-    def widget_is_alive(self, widget):
-        if widget is None:
-            return False
-
-        try:
-            return bool(widget.winfo_exists())
-        except tk.TclError:
-            return False
-
     def add_task(self):
         task = simpledialog.askstring(
             "New Task",
