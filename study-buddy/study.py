@@ -693,3 +693,78 @@ class StudyBuddy:
             bg=PANEL,
             fg=DARK_BLUE
         ).pack()
+
+
+    def create_settings_page(self):
+        tk.Label(
+            self.page_frame,
+            text="Customize your study session.",
+            font=("Arial", 11),
+            bg=BG,
+            fg=MUTED
+        ).pack(anchor="w", pady=(0, 25))
+
+        settings_frame = tk.Frame(
+            self.page_frame,
+            bg=PANEL,
+            padx=25,
+            pady=25
+        )
+        settings_frame.pack(fill="x")
+
+        tk.Label(
+            settings_frame,
+            text="Focus Duration",
+            font=("Arial", 14, "bold"),
+            bg=PANEL,
+            fg=DARK_BLUE
+        ).pack(anchor="w", pady=(0, 15))
+
+        self.duration_var = tk.IntVar(
+            value=self.focus_minutes
+        )
+
+        for minutes in [15, 25, 30, 45, 60]:
+            tk.Radiobutton(
+                settings_frame,
+                text=f"{minutes} minutes",
+                variable=self.duration_var,
+                value=minutes,
+                font=("Arial", 11),
+                bg=PANEL,
+                fg=DARK,
+                activebackground=PANEL,
+                selectcolor=PANEL_BLUE
+            ).pack(anchor="w", pady=5)
+
+        tk.Button(
+            settings_frame,
+            text="Save Settings",
+            font=("Arial", 11, "bold"),
+            bg=BLUE,
+            fg=WHITE,
+            relief="flat",
+            padx=20,
+            pady=8,
+            command=self.save_settings
+        ).pack(anchor="w", pady=(20, 0))
+
+    def save_settings(self):
+        self.pause_timer()
+
+        self.focus_minutes = self.duration_var.get()
+        self.remaining_seconds = self.focus_minutes * 60
+
+        messagebox.showinfo(
+            "Study Buddy",
+            "Settings saved successfully!"
+        )
+
+        if self.current_page == "Focus":
+            self.update_timer_text()
+
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    app = StudyBuddy(root)
+    root.mainloop()
