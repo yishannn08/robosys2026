@@ -46,7 +46,7 @@ class StudyBuddy:
 
 
     def create_main_layout(self):
-header = tk.Frame(
+        header = tk.Frame(
             self.root,
             bg=DARK_BLUE,
             height=65
