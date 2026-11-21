@@ -288,3 +288,161 @@ class StudyBuddy:
         )
 
         return canvas
+
+
+    def create_focus_page(self):
+        self.draw_study_scene(self.page_frame)
+
+        timer_frame = tk.Frame(
+            self.page_frame,
+            bg=PANEL,
+            padx=25,
+            pady=20
+        )
+        timer_frame.pack(fill="x", pady=(0, 18))
+
+        tk.Label(
+            timer_frame,
+            text="Focus Time",
+            font=("Arial", 15, "bold"),
+            bg=PANEL,
+            fg=DARK_BLUE
+        ).pack(pady=(0, 10))
+
+        self.timer_label = tk.Label(
+            timer_frame,
+            text=self.format_time(self.remaining_seconds),
+            font=("Arial", 42, "bold"),
+            bg=PANEL,
+            fg=BLUE
+        )
+        self.timer_label.pack(pady=5)
+
+        button_frame = tk.Frame(timer_frame, bg=PANEL)
+        button_frame.pack(pady=(12, 0))
+
+        tk.Button(
+            button_frame,
+            text="Start",
+            font=("Arial", 11, "bold"),
+            bg=BLUE,
+            fg=WHITE,
+            activebackground=DARK_BLUE,
+            activeforeground=WHITE,
+            relief="flat",
+            padx=25,
+            pady=8,
+            command=self.start_timer
+        ).pack(side="left", padx=6)
+
+        tk.Button(
+            button_frame,
+            text="Pause",
+            font=("Arial", 11),
+            bg=PANEL_BLUE,
+            fg=DARK_BLUE,
+            relief="flat",
+            padx=25,
+            pady=8,
+            command=self.pause_timer
+        ).pack(side="left", padx=6)
+
+        tk.Button(
+            button_frame,
+            text="Reset",
+            font=("Arial", 11),
+            bg=PANEL_BLUE,
+            fg=DARK_BLUE,
+            relief="flat",
+            padx=25,
+            pady=8,
+            command=self.reset_timer
+        ).pack(side="left", padx=6)
+
+        tk.Label(
+            self.page_frame,
+            text="Don't forget to take a break.",
+            font=("Arial", 11, "italic"),
+            bg=BG,
+            fg=MUTED
+        ).pack(pady=(0, 15))
+
+        task_header = tk.Frame(self.page_frame, bg=BG)
+        task_header.pack(fill="x", pady=(5, 10))
+
+        tk.Label(
+            task_header,
+            text="Today's Tasks",
+            font=("Arial", 16, "bold"),
+            bg=BG,
+            fg=DARK_BLUE
+        ).pack(side="left")
+
+        tk.Button(
+            task_header,
+            text="+ Add",
+            font=("Arial", 10, "bold"),
+            bg=BLUE,
+            fg=WHITE,
+            relief="flat",
+            padx=15,
+            pady=5,
+            command=self.add_task
+        ).pack(side="right")
+
+        self.today_task_frame = tk.Frame(
+            self.page_frame,
+            bg=BG
+        )
+        self.today_task_frame.pack(fill="both", expand=True)
+
+        self.refresh_today_tasks()
+
+    def format_time(self, seconds):
+        minutes = seconds // 60
+        seconds = seconds % 60
+        return f"{minutes:02d}:{seconds:02d}"
+
+    def update_timer_text(self):
+        if self.widget_is_alive(self.timer_label):
+            self.timer_label.config(
+                text=self.format_time(self.remaining_seconds)
+            )
+
+    def start_timer(self):
+        if not self.timer_running:
+            self.timer_running = True
+            self.countdown()
+
+    def countdown(self):
+        if not self.timer_running:
+            return
+
+        if self.remaining_seconds > 0:
+            self.update_timer_text()
+            self.remaining_seconds -= 1
+            self.timer_job = self.root.after(1000, self.countdown)
+        else:
+            self.timer_running = False
+            self.timer_job = None
+            self.total_study_minutes += self.focus_minutes
+            self.remaining_seconds = 0
+            self.update_timer_text()
+            messagebox.showinfo(
+                "Study Buddy",
+                "Great job! Time to take a break."
+            )
+
+    def pause_timer(self):
+        self.timer_running = False
+
+        if self.timer_job is not None:
+            self.root.after_cancel(self.timer_job)
+            self.timer_job = None
+
+        self.update_timer_text()
+
+    def reset_timer(self):
+        self.pause_timer()
+        self.remaining_seconds = self.focus_minutes * 60
+        self.update_timer_text()
