@@ -151,3 +151,140 @@ class StudyBuddy:
             self.create_statistics_page()
         elif page == "Settings":
             self.create_settings_page()
+
+
+    def draw_study_scene(self, parent):
+        canvas = tk.Canvas(
+            parent,
+            height=250,
+            bg=PANEL_BLUE,
+            highlightthickness=0
+        )
+        canvas.pack(fill="x", pady=(0, 20))
+
+        canvas.create_oval(
+            650, -100, 900, 150,
+            fill="#C3D2E8",
+            outline=""
+        )
+
+        canvas.create_rectangle(
+            55, 30, 210, 135,
+            fill="#F7F9FD",
+            outline=BLUE,
+            width=3
+        )
+
+        canvas.create_line(
+            132, 30, 132, 135,
+            fill=BLUE,
+            width=2
+        )
+
+        canvas.create_line(
+            55, 82, 210, 82,
+            fill=BLUE,
+            width=2
+        )
+
+        canvas.create_oval(
+            75, 45, 105, 75,
+            fill="#E6D9A8",
+            outline=""
+        )
+
+        canvas.create_rectangle(
+            0, 185, 850, 250,
+            fill="#AABBD2",
+            outline=""
+        )
+
+        canvas.create_rectangle(
+            170, 125, 390, 185,
+            fill=DARK_BLUE,
+            outline=""
+        )
+
+        canvas.create_rectangle(
+            180, 135, 380, 175,
+            fill="#DCE7F4",
+            outline=""
+        )
+
+        canvas.create_oval(
+            270, 185, 290, 195,
+            fill=DARK_BLUE,
+            outline=""
+        )
+
+        canvas.create_rectangle(
+            245, 195, 315, 200,
+            fill=DARK_BLUE,
+            outline=""
+        )
+
+        canvas.create_rectangle(
+            440, 155, 545, 165,
+            fill="#F7F9FD",
+            outline=BLUE
+        )
+
+        canvas.create_rectangle(
+            450, 145, 540, 155,
+            fill="#D8E4F3",
+            outline=BLUE
+        )
+
+        canvas.create_line(
+            600, 185, 600, 105,
+            fill=DARK_BLUE,
+            width=5
+        )
+
+        canvas.create_line(
+            600, 110, 650, 85,
+            fill=DARK_BLUE,
+            width=5
+        )
+
+        canvas.create_arc(
+            620, 60, 685, 120,
+            start=180,
+            extent=180,
+            fill="#E6D9A8",
+            outline=DARK_BLUE,
+            width=2
+        )
+
+        canvas.create_rectangle(
+            690, 165, 710, 185,
+            fill="#B8A6A0",
+            outline=""
+        )
+
+        canvas.create_oval(
+            675, 115, 725, 170,
+            fill=GREEN,
+            outline=""
+        )
+
+        canvas.create_oval(
+            655, 130, 690, 165,
+            fill=GREEN,
+            outline=""
+        )
+
+        canvas.create_oval(
+            705, 125, 740, 165,
+            fill=GREEN,
+            outline=""
+        )
+
+        canvas.create_text(
+            110, 155,
+            text="Time to study",
+            font=("Arial", 12, "bold"),
+            fill=DARK_BLUE
+        )
+
+        return canvas
