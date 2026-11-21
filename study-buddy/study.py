@@ -31,7 +31,6 @@ class StudyBuddy:
         self.timer_job = None
 
         self.tasks = []
-        self.completed_tasks = 0
         self.total_study_minutes = 0
 
         self.current_page = "Focus"
@@ -268,12 +267,6 @@ class StudyBuddy:
 
         canvas.create_rectangle(
             198, 290, 220, 300,
-            fill="#7399C9",
-            outline=""
-        )
-
-        canvas.create_rectangle(
-            198, 290, 220, 300,
             fill="#243B5A",
             outline=""
         )
@@ -351,7 +344,8 @@ class StudyBuddy:
         )
 
         canvas.create_polygon(
-            309, 228,
+            309,
+ 228,
             326, 199,
             329, 211,
             313, 235,
@@ -519,10 +513,10 @@ class StudyBuddy:
         return f"{minutes:02d}:{seconds:02d}"
 
     def update_timer_text(self):
-        if self.widget_is_alive(self.timer_label):
+        if self.current_page == "Focus" and self.timer_label:
             self.timer_label.config(
                 text=self.format_time(self.remaining_seconds)
-            )
+        )
 
     def start_timer(self):
         if not self.timer_running:
@@ -602,7 +596,7 @@ class StudyBuddy:
             self.refresh_tasks()
 
     def refresh_today_tasks(self):
-        if not self.widget_is_alive(self.today_task_frame):
+        if self.current_page != "Focus" or not self.today_task_frame:
             return
 
         for widget in self.today_task_frame.winfo_children():
@@ -613,7 +607,7 @@ class StudyBuddy:
                 self.today_task_frame,
                 text="No tasks yet. Add a new task!",
                 font=("Arial", 11),
-                bg=BG,
+                bg=PANEL,
                 fg=MUTED
             ).pack(anchor="w", pady=10)
             return
@@ -680,7 +674,7 @@ class StudyBuddy:
         self.refresh_tasks()
 
     def refresh_tasks(self):
-        if not self.widget_is_alive(self.task_list_frame):
+        if self.current_page != "Tasks" or not self.task_list_frame:
             return
 
         for widget in self.task_list_frame.winfo_children():
