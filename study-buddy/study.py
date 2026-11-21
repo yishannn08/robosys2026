@@ -21,8 +21,8 @@ class StudyBuddy:
     def __init__(self, root):
         self.root = root
         self.root.title("Study Buddy")
-        self.root.geometry("1100x720")
-        self.root.minsize(900, 600)
+        self.root.geometry("900x680")
+        self.root.minsize(850, 550)
         self.root.configure(bg=BG)
 
         self.focus_minutes = 25
@@ -51,7 +51,7 @@ class StudyBuddy:
         self.sidebar = tk.Frame(
             self.main_frame,
             bg=DARK_BLUE,
-            width=210
+            width=190
         )
         self.sidebar.pack(side="left", fill="y")
         self.sidebar.pack_propagate(False)
