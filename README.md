@@ -14,22 +14,31 @@
 Pass input text to `./doneberry` via standard input . Each non-empty line is printed in the format `<original> -> <translated>`.
 
 ### 1. Malay to Japanese
+```bash
 $ echo "anjing" | ./doneberry
 anjing -> 犬
 
 ### 2. Japanese to Malay
+Bash
 
 $ echo "ありがとうございます" | ./doneberry
 ありがとうございます -> Terima kasih
+
+## Installation
+
+```bash
+git clone [https://github.com/yishannn08/robosys2026.git](https://github.com/yishannn08/robosys2026.git)
+cd robosys2026
+chmod +x doneberry
 
 ## Input Specifications & Error Handling
 
 doneberry checks the input and exits with status 1 when:
 
-- **Empty input** (e.g., `printf "" | ./doneberry`): Prints `No input` and exits with `1`.
+- **Empty input** : Prints `No input` and exits with `1`.
 - **Non-alphabetic / numeric-only lines** (e.g., `echo "12345" | ./doneberry`): Prints `Invalid input` and exits with `1`.
 - **Extra command-line arguments** (e.g., `./doneberry arg1`): Prints `Usage: doneberry < text` and exits with `1`.
-- **Network / API failure**: Prints `Translation error` and exits with `1`.
+- **Network failure**: Prints `Translation error` and exits with `1`.
 
 ### Tested Environments
 - **OS**: Ubuntu 24.04 
