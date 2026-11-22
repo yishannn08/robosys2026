@@ -4,8 +4,8 @@
 
 import json
 import sys
-import urlib.parse
-import urlib.request
+import urllib.parse
+import urllib.request
 
 
 def is_japanese(text):
@@ -47,9 +47,9 @@ for line in sys.stdin:
 
     try:
         if is_japanese(text):
-            ans = ja_to_ms.translate(text, "ja", "ms")
+            ans = translate(text, "ja", "ms")
         else:
-            ans = ms_to_ja.translate(text,"ms", "ja")
+            ans = translate(text,"ms", "ja")
         print(f"{text} -> {ans}")
     except Exception:
         sys.stderr.write("Translation error\n")
