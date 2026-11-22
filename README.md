@@ -6,7 +6,7 @@
 ## Purpose & Use Cases
 
 - **Bidirectional Translation**: Converts Malay text into Japanese and Japanese text into Malay without needing any language flags or command-line options.
-- **Pipeline Integration**: Designed to work seamlessly with standard Unix pipelines (`|`), making it easy to translate text files, command outputs, or multi-line strings in one go.
+- **Pipe Support**: Works with standard Unix pipes (|) to translate single lines, multi-line text, or files.
 - **Zero External Dependencies**: Implemented using only Python built-in standard libraries (`sys`, `json`, `urllib`), so no `pip install` or virtual environment setup is required.
 
 ## Usage
@@ -24,7 +24,7 @@ $ echo "ありがとうございます" | ./doneberry
 
 ## Input Specifications & Error Handling
 
-To ensure reliable behavior in automated scripts, `doneberry` validates all inputs and exits with status `1` (writing an error message to `stderr`) in the following cases:
+doneberry checks the input and exits with status 1 when:
 
 - **Empty input** (e.g., `printf "" | ./doneberry`): Prints `No input` and exits with `1`.
 - **Non-alphabetic / numeric-only lines** (e.g., `echo "12345" | ./doneberry`): Prints `Invalid input` and exits with `1`.
