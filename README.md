@@ -11,11 +11,11 @@
 
 ## Installation
 
-\x60\x60\x60bash
+```bash
 git clone https://github.com/yishannn08/robosys2026.git
 cd robosys2026
 chmod +x doneberry
-\x60\x60\x60
+```
 
 ## Usage
 
@@ -25,13 +25,14 @@ Pass input text to `./doneberry` via standard input . Each non-empty line is pri
 ```bash
 $ echo "anjing" | ./doneberry
 anjing -> 犬
+```
 
 ### 2. Japanese to Malay
 
-\x60\x60\x60bash
+```bash
 $ echo "ありがとうございます" | ./doneberry
 ありがとうございます -> Terima kasih
-\x60\x60\x60
+```
 
 ## Input Specifications & Error Handling
 
