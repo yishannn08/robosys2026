@@ -1,7 +1,7 @@
 # doneberry
 ![test](https://github.com/yishannn08/robosys2026/actions/workflows/test.yml/badge.svg)
 
-`doneberry` is a command-line bidirectional translator between **Malay** and **Japanese**. It reads text line by line from standard input (`stdin`), detects the source language automatically, and prints the translated result to standard output (`stdout`).
+`doneberry` is a command-line bidirectional translator between **Malay** and **Japanese**. It reads text line by line from standard input, detects the source language automatically, and prints the translated result to standard output.
 
 ## Purpose & Use Cases
 
@@ -11,7 +11,7 @@
 
 ## Usage
 
-Pass input text to `./doneberry` via standard input (`stdin`). Each non-empty line is printed in the format `<original> -> <translated>`.
+Pass input text to `./doneberry` via standard input . Each non-empty line is printed in the format `<original> -> <translated>`.
 
 ### 1. Malay to Japanese
 $ echo "anjing" | ./doneberry
