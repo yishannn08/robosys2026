@@ -9,9 +9,9 @@ ng () {
 
 res=0
 
-out=$(printf "kucing\nnasi lemak\n" | ./doneberry)
+out=$(printf "anjing\nnasi lemak\n" | ./doneberry)
 [ "$?" = 0 ] || ng "$LINENO"
-echo "${out}" | grep -q "^kucing -> 猫$" || ng "$LINENO"
+echo "${out}" | grep -q "^anjing -> 犬$" || ng "$LINENO"
 echo "${out}" | grep -q "^nasi lemak -> " || ng "$LINENO"
 
 out=$(echo "ありがとうございます" | ./doneberry)
@@ -26,7 +26,7 @@ out=$(echo "12345" | ./doneberry 2>/dev/null)
 [ "$?" = 1 ] || ng "$LINENO"
 [ "${out}" = "" ] || ng "$LINENO"
 
-out=$(echo "kucing" | ./doneberry extra_arg 2>/dev/null)
+out=$(echo "anjing" | ./doneberry extra_arg 2>/dev/null)
 [ "$?" = 1 ] || ng "$LINENO"
 [ "${out}" = "" ] || ng "$LINENO"
 
