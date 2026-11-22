@@ -9,6 +9,14 @@
 - **Pipe Support**: Works with standard Unix pipes (|) to translate single lines, multi-line text, or files.
 - **Zero External Dependencies**: Implemented using only Python built-in standard libraries (`sys`, `json`, `urllib`), so no `pip install` or virtual environment setup is required.
 
+## Installation
+
+\x60\x60\x60bash
+git clone https://github.com/yishannn08/robosys2026.git
+cd robosys2026
+chmod +x doneberry
+\x60\x60\x60
+
 ## Usage
 
 Pass input text to `./doneberry` via standard input . Each non-empty line is printed in the format `<original> -> <translated>`.
@@ -19,17 +27,11 @@ $ echo "anjing" | ./doneberry
 anjing -> 犬
 
 ### 2. Japanese to Malay
-Bash
 
+\x60\x60\x60bash
 $ echo "ありがとうございます" | ./doneberry
 ありがとうございます -> Terima kasih
-
-## Installation
-
-```bash
-git clone [https://github.com/yishannn08/robosys2026.git](https://github.com/yishannn08/robosys2026.git)
-cd robosys2026
-chmod +x doneberry
+\x60\x60\x60
 
 ## Input Specifications & Error Handling
 
