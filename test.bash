@@ -9,31 +9,29 @@ ng () {
 
 res=0
 
-out=$(printf "task,status,due\nReport,done,2026-11-01\nCode,todo,2099-12-31\nCode,todo,\n" | ./doneberry)
-echo "${out}" | grep -q "Total     : 3" || ng "$LINENO"
-echo "${out}" | grep -q "Completed : 1" || ng "$LINENO"
-echo "${out}" | grep -q "Remaining : 2" || ng "$LINENO"
-echo "${out}" | grep -q "Duplicates: 1" || ng "$LINENO"
-echo "${out}" | grep -q "No due    : 1" || ng "$LINENO"
-echo "${out}" | grep -q "Overdue   : 0" || ng "$LINENO"
+### 正常系テスト（马来语 -> 日语） ###
+out=$(printf "kucing\nnasi lemak\n" | ./doneberry)
+[ "$?" = 0 ] || ng "$LINENO"
+echo "${out}" | grep -q "^kucing -> 猫$" || ng "$LINENO"
+echo "${out}" | grep -q "^nasi lemak -> " || ng "$LINENO"
 
-out_overdue=$(printf "task,status,due\nOld task,todo,2020-01-01\n" | ./doneberry)
-echo "${out_overdue}" | grep -q "Overdue   : 1" || ng "$LINENO"
-echo "${out_overdue}" | grep -q -- "- Old task" || ng "$LINENO"
+### 正常系テスト（日语 -> 马来语） ###
+out=$(echo "ありがとうございます" | ./doneberry)
+[ "$?" = 0 ] || ng "$LINENO"
+echo "${out}" | grep -qi "^ありがとうございます -> terima kasih" || ng "$LINENO"
 
+### 異常系テスト（空输入） ###
 out=$(printf "" | ./doneberry 2>/dev/null)
 [ "$?" = 1 ] || ng "$LINENO"
 [ "${out}" = "" ] || ng "$LINENO"
 
-out=$(printf "name,state\nA,done\n" | ./doneberry 2>/dev/null)
+### 異常系テスト（纯数字/无字母） ###
+out=$(echo "12345" | ./doneberry 2>/dev/null)
 [ "$?" = 1 ] || ng "$LINENO"
 [ "${out}" = "" ] || ng "$LINENO"
 
-out=$(printf "task,status,due\n,todo,2026-12-01\n" | ./doneberry 2>/dev/null)
-[ "$?" = 1 ] || ng "$LINENO"
-[ "${out}" = "" ] || ng "$LINENO"
-
-out=$(printf "task,status,due\nA,todo,2026-99-99\n" | ./doneberry 2>/dev/null)
+### 異常系テスト（多余命令行参数） ###
+out=$(echo "kucing" | ./doneberry extra_arg 2>/dev/null)
 [ "$?" = 1 ] || ng "$LINENO"
 [ "${out}" = "" ] || ng "$LINENO"
 
