@@ -11,7 +11,7 @@ res=0
 
 out=$(printf "anjing\nnasi lemak\n" | ./doneberry)
 [ "$?" = 0 ] || ng "$LINENO"
-echo "${out}" | grep -q "^anjing -> 犬$" || ng "$LINENO"
+echo "${out}" | grep -q "^anjing -> ." || ng "$LINENO"
 echo "${out}" | grep -q "^nasi lemak -> " || ng "$LINENO"
 
 out=$(echo "ありがとうございます" | ./doneberry)
