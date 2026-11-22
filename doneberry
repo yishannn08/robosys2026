@@ -2,83 +2,54 @@
 # SPDX-FileCopyrightText: 2026 CHAI YI SHAN
 # SPDX-License-Identifier: BSD-3-Clause
 
-import csv
-from datetime import date
 import sys
+from deep_translator import MyMemoryTranslator
 
 
-def main():
-    if len(sys.argv) > 1:
-        sys.stderr.write("Usage: taskchk < tasks.csv\n")
+def is_japanese(text):
+    for ch in text:
+        if "\u3040" <= ch <= "\u30ff" or "\u4e00" <= ch <= "\u9fff":
+            return True
+    return False
+
+
+def has_letter(text):
+    for ch in text:
+        if ch.isalpha():
+            return True
+    return False
+
+
+if len(sys.argv) != 1:
+    sys.stderr.write("Usage: doneberry < text\n")
+    sys.exit(1)
+
+ja_to_ms = MyMemoryTranslator(source="ja", target="ms-MY")
+ms_to_ja = MyMemoryTranslator(source="ms", target="ja-JP")
+
+has_data = False
+
+for line in sys.stdin:
+    text = line.strip()
+    if not text:
+        continue
+    has_data = True
+
+    if not has_letter(text):
+        sys.stderr.write("Invalid input\n")
         sys.exit(1)
 
-    reader = csv.DictReader(sys.stdin)
-    required = {"task", "status", "due"}
-    if not reader.fieldnames or not required.issubset(set(reader.fieldnames)):
-        sys.stderr.write("Error: CSV header must include task,status,due\n")
-        sys.exit(1)
-
-    rows = list(reader)
-    if not rows:
-        sys.stderr.write("Error: no task rows found\n")
-        sys.exit(1)
-
-    today = date.today()
-    total = 0
-    done = 0
-    seen = set()
-    duplicates = []
-    missing_due = []
-    overdue = []
-
-    for row in rows:
-        if None in row.values():
-            sys.stderr.write("Error: malformed CSV row\n")
-            sys.exit(1)
-
-        name = row["task"].strip()
-        status = row["status"].strip().lower()
-        due = row["due"].strip()
-
-        if not name:
-            sys.stderr.write("Error: empty task name\n")
-            sys.exit(1)
-
-        total += 1
-        if status == "done":
-            done += 1
-
-        key = name.lower()
-        if key in seen:
-            duplicates.append(name)
-        seen.add(key)
-
-        if not due:
-            missing_due.append(name)
+    try:
+        if is_japanese(text):
+            ans = ja_to_ms.translate(text)
         else:
-            try:
-                due_date = date.fromisoformat(due)
-            except ValueError:
-                sys.stderr.write(f"Error: invalid date '{due}'\n")
-                sys.exit(1)
+            ans = ms_to_ja.translate(text)
+        print(f"{text} -> {ans}")
+    except Exception:
+        sys.stderr.write("Translation error\n")
+        sys.exit(1)
 
-            if due_date < today and status != "done":
-                overdue.append(name)
+if not has_data:
+    sys.stderr.write("No input\n")
+    sys.exit(1)
 
-    print("TASK REPORT")
-    print("-----------")
-    print(f"Total     : {total}")
-    print(f"Completed : {done}")
-    print(f"Remaining : {total - done}")
-    print(f"Duplicates: {len(duplicates)}")
-    print(f"No due    : {len(missing_due)}")
-    print(f"Overdue   : {len(overdue)}")
-
-    if overdue:
-        print("\nOverdue list:")
-        for item in overdue:
-            print(f"- {item}")
-
-
-if __name__ == "__main__":
-    main()
