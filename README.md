@@ -1,18 +1,42 @@
-# plusコマンド
+# doneberry
 ![test](https://github.com/yishannn08/robosys2026/actions/workflows/test.yml/badge.svg)
-↑ テスト結果を反映したバッジの画像が埋め込まれる
 
-標準入力から読み込んだ数字を足す。
+`doneberry` is a command-line bidirectional translator between **Malay** and **Japanese**. It reads text line by line from standard input (`stdin`), detects the source language automatically, and prints the translated result to standard output (`stdout`).
 
+## Purpose & Use Cases
 
-## 必要なソフトウェア
-- Python
-  - テスト済みバージョン: 3.10〜3.14
+- **Bidirectional Translation**: Converts Malay text into Japanese and Japanese text into Malay without needing any language flags or command-line options.
+- **Pipeline Integration**: Designed to work seamlessly with standard Unix pipelines (`|`), making it easy to translate text files, command outputs, or multi-line strings in one go.
+- **Zero External Dependencies**: Implemented using only Python built-in standard libraries (`sys`, `json`, `urllib`), so no `pip install` or virtual environment setup is required.
 
-## テスト環境
-- Ubuntu 24.04 LTS
+## Usage
 
-## ライセンス
-- このソフトウェアパッケージは、3条項BSDライセンスの下、再頒布および使用が許可されます。
-- © 2026 Taro Suzuki
+Pass input text to `./doneberry` via standard input (`stdin`). Each non-empty line is printed in the format `<original> -> <translated>`.
+
+### 1. Malay to Japanese
+$ echo "anjing" | ./doneberry
+anjing -> 犬
+
+### 2. Japanese to Malay
+
+$ echo "ありがとうございます" | ./doneberry
+ありがとうございます -> Terima kasih
+
+## Input Specifications & Error Handling
+
+To ensure reliable behavior in automated scripts, `doneberry` validates all inputs and exits with status `1` (writing an error message to `stderr`) in the following cases:
+
+- **Empty input** (e.g., `printf "" | ./doneberry`): Prints `No input` and exits with `1`.
+- **Non-alphabetic / numeric-only lines** (e.g., `echo "12345" | ./doneberry`): Prints `Invalid input` and exits with `1`.
+- **Extra command-line arguments** (e.g., `./doneberry arg1`): Prints `Usage: doneberry < text` and exits with `1`.
+- **Network / API failure**: Prints `Translation error` and exits with `1`.
+
+### Tested Environments
+- **OS**: Ubuntu 24.04 
+- **Python**: 3.10, 3.11, 3.12, 3.13
+
+## License
+
+- This software package is licensed under the [BSD 3-Clause License](LICENSE).
+- © 2026 CHAI YI SHAN
 
